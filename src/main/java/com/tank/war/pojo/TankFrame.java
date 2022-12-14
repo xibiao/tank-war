@@ -23,7 +23,7 @@ public class TankFrame extends Frame {
 
     private Integer height;
 
-    private static Tank tank = new Tank();
+    private static TankBulletObj tankBulletObj;
 
     private TankFrame() {
     }
@@ -31,13 +31,13 @@ public class TankFrame extends Frame {
     private TankFrame(Builder builder) {
         this.width = builder.width;
         this.height = builder.height;
-        tank = builder.tank;
+        tankBulletObj = builder.tankBulletObj;
     }
 
     public static class Builder{
         private Integer width = 800;
         private Integer height = 600;
-        private Tank tank;
+        private TankBulletObj tankBulletObj;
 
         public Builder setWidth(Integer width) {
             this.width = width;
@@ -49,8 +49,8 @@ public class TankFrame extends Frame {
             return this;
         }
 
-        public Builder setTank(Tank tank){
-            this.tank = tank;
+        public Builder setTank(TankBulletObj tankBulletObj){
+            this.tankBulletObj = tankBulletObj;
             return this;
         }
 
@@ -74,13 +74,33 @@ public class TankFrame extends Frame {
     }
 
     /**
+     * 双缓冲解决坦克窗口屏幕闪烁问题
+     */
+    Image offScreenImg = null;
+    @Override
+    public void update(Graphics g){
+        if (offScreenImg == null){
+            //在内存中创建一个与坦克窗口大小一致的画板
+            offScreenImg = this.createImage(width,height);
+        }
+        Graphics offScreenGraphics = offScreenImg.getGraphics();
+        Color color = offScreenGraphics.getColor();
+        offScreenGraphics.setColor(Color.white);
+        offScreenGraphics.fillRect(0,0,width,height);
+        offScreenGraphics.setColor(color);
+        paint(offScreenGraphics);
+        //将内存中的画板复制到坦克窗口中
+        g.drawImage(offScreenImg,0,0,null);
+    }
+
+    /**
      * 该方法是系统自动调用，相当于在画布上作画，让坦克移动
      * @param g
      */
     @Override
     public void paint(Graphics g){
         //4.根据坦克移动的方向，将坦克向对应的方向进行移动
-        tank.paint(g);
+        tankBulletObj.paint(g);
     }
 
     static class MyKeyListener extends KeyAdapter{
@@ -138,21 +158,21 @@ public class TankFrame extends Frame {
 
         public void setMainTankDir(){
             if (bL || bU || bR || bD){
-                tank.setMoving(true);
+                tankBulletObj.setMoving(true);
                 if (bL){
-                    tank.setDirection(Direction.LEFT);
+                    tankBulletObj.setDirection(Direction.LEFT);
                 }
                 if (bU){
-                    tank.setDirection(Direction.UP);
+                    tankBulletObj.setDirection(Direction.UP);
                 }
                 if (bR){
-                    tank.setDirection(Direction.RIGHT);
+                    tankBulletObj.setDirection(Direction.RIGHT);
                 }
                 if (bD){
-                    tank.setDirection(Direction.DOWN);
+                    tankBulletObj.setDirection(Direction.DOWN);
                 }
             } else {
-                tank.setMoving(false);
+                tankBulletObj.setMoving(false);
             }
         }
     }
