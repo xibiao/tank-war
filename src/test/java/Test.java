@@ -13,8 +13,9 @@ public class Test {
     public static void main(String[] args) {
         //Tank tank = new Tank();
         Tank tank = new Tank(200,200, Direction.DOWN);
-        Bullet bullet = new Bullet(200,200,Direction.DOWN);
+        //Bullet bullet = new Bullet(200,200,Direction.DOWN);
         TankFrame frame = new TankFrame.Builder().setWidth(1200).setHeight(800).setTank(tank).build();
+        tank.setTankFrame(frame);
         while (true){
             try {
                 Thread.sleep(100);

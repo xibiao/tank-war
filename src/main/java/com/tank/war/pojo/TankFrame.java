@@ -7,6 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: Xibiao Cao
@@ -25,6 +27,8 @@ public class TankFrame extends Frame {
 
     private static TankBulletObj tankBulletObj;
 
+    private List<Bullet> bullets = new ArrayList<>();
+
     private TankFrame() {
     }
 
@@ -32,6 +36,14 @@ public class TankFrame extends Frame {
         this.width = builder.width;
         this.height = builder.height;
         tankBulletObj = builder.tankBulletObj;
+    }
+
+    public List<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public void setBullets(List<Bullet> bullets) {
+        this.bullets = bullets;
     }
 
     public static class Builder{
@@ -94,13 +106,17 @@ public class TankFrame extends Frame {
     }
 
     /**
-     * 该方法是系统自动调用，相当于在画布上作画，让坦克移动
-     * @param g
+     * 该方法是系统自动调用，相当于在画布上作画，让坦克移动和发射子弹
      */
     @Override
     public void paint(Graphics g){
         //4.根据坦克移动的方向，将坦克向对应的方向进行移动
         tankBulletObj.paint(g);
+        //g.drawString("子弹的数量：" + bullets.size(),20,50);
+        //由于增强for循环是迭代器中提供的，如果使用增强for循环，在删除bullets时会报并发修改异常。
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).paint(g);
+        }
     }
 
     static class MyKeyListener extends KeyAdapter{
@@ -148,6 +164,10 @@ public class TankFrame extends Frame {
                     break;
                 case KeyEvent.VK_DOWN:
                     bD = false;
+                    break;
+                case KeyEvent.VK_CONTROL:
+                    //释放Ctrl键，发射子弹
+                    tankBulletObj.fire();
                     break;
                 default:
                     break;

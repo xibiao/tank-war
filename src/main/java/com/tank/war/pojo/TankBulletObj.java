@@ -94,4 +94,6 @@ public abstract class TankBulletObj {
         }
     }
 
+    void fire(){}
+
 }
