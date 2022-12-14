@@ -9,6 +9,14 @@ public class Test {
 
     public static void main(String[] args) {
         TankFrame frame = new TankFrame.Builder().setWidth(1200).setHeight(800).build();
+        while (true){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            frame.repaint();
+        }
     }
 
 }
