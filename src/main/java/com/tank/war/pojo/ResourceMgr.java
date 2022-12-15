@@ -16,6 +16,7 @@ public class ResourceMgr {
     public static BufferedImage enemyTankL,enemyTankU,enemyTankR,enemyTankD;
     public static BufferedImage bulletL,bulletU,bulletR,bulletD;
     public static BufferedImage[] explodes = new BufferedImage[16];
+    public static Audio explodeAudio;
 
     static {
         try {
@@ -38,6 +39,8 @@ public class ResourceMgr {
             for (int i = 0; i < 16; i++) {
                 explodes[i] = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/explode/e" + (i+1) +".gif")));
             }
+            //爆炸声音
+            explodeAudio = new Audio("audio/explode.wav");
         } catch (IOException e) {
             e.printStackTrace();
         }

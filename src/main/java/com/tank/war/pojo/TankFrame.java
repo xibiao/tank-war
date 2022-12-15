@@ -184,6 +184,8 @@ public class TankFrame extends Frame {
             for (int i = 0; i < ResourceMgr.explodes.length; i++) {
                 e.paint(GRAPHICS_LOCAL.get());
             }
+            //爆炸时产生声音
+            new Thread(ResourceMgr.explodeAudio).start();
             GRAPHICS_LOCAL.remove();
         }
     }
