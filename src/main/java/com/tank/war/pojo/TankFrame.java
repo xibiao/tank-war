@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -28,6 +29,8 @@ public class TankFrame extends Frame {
     private static TankBulletObj tankBulletObj;
 
     private List<Bullet> bullets = new ArrayList<>();
+    //敌军坦克
+    private static List<Tank> enemyTanks = new ArrayList<>();
 
     private TankFrame() {
     }
@@ -44,6 +47,10 @@ public class TankFrame extends Frame {
 
     public void setBullets(List<Bullet> bullets) {
         this.bullets = bullets;
+    }
+
+    public List<Tank> getEnemyTanks() {
+        return enemyTanks;
     }
 
     public static class Builder{
@@ -112,10 +119,23 @@ public class TankFrame extends Frame {
     public void paint(Graphics g){
         //4.根据坦克移动的方向，将坦克向对应的方向进行移动
         tankBulletObj.paint(g);
-        //g.drawString("子弹的数量：" + bullets.size(),20,50);
-        //由于增强for循环是迭代器中提供的，如果使用增强for循环，在删除bullets时会报并发修改异常。
-        for (int i = 0; i < bullets.size(); i++) {
+        g.drawString("子弹的数量：" + bullets.size(),20,50);
+        //由于增强for循环是迭代器中提供的，如果使用增强for，在删除bullets中的数据时会报并发修改异常。
+        //或者使用迭代器删除也可以。也就是说使用迭代器遍历list时，不能使用list自带的remove方法删除元素。
+        /*for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).paint(g);
+        }*/
+        Iterator<Bullet> it = bullets.iterator();
+        while (it.hasNext()){
+            Bullet b = it.next();
+            b.paint(g);
+            if (!b.isLive()){
+                it.remove();
+            }
+        }
+        //画出敌军坦克
+        for (Tank enemy : enemyTanks){
+            enemy.paint(g);
         }
     }
 
@@ -166,8 +186,13 @@ public class TankFrame extends Frame {
                     bD = false;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    //释放Ctrl键，发射子弹
+                    //释放Ctrl键，我军坦克发射子弹
                     tankBulletObj.fire();
+                    break;
+                case KeyEvent.VK_SHIFT:
+                    for (Tank enemy : enemyTanks){
+                        enemy.fire();
+                    }
                     break;
                 default:
                     break;

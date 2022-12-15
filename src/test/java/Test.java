@@ -12,9 +12,15 @@ public class Test {
 
     public static void main(String[] args) {
         //Tank tank = new Tank();
-        Tank tank = new Tank(200,200, Direction.DOWN);
+        Tank tank = new Tank(300,500, Direction.UP);
         //Bullet bullet = new Bullet(200,200,Direction.DOWN);
-        TankFrame frame = new TankFrame.Builder().setWidth(1200).setHeight(800).setTank(tank).build();
+        TankFrame frame = new TankFrame.Builder().setWidth(600).setHeight(600).setTank(tank).build();
+        for (int i = 0; i < 5; i++) {
+            Tank enemy = new Tank(200 + i*50,200,Direction.DOWN);
+            enemy.setEnemy(true);
+            enemy.setTankFrame(frame);
+            frame.getEnemyTanks().add(enemy);
+        }
         tank.setTankFrame(frame);
         while (true){
             try {
