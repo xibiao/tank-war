@@ -8,6 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +23,8 @@ import java.util.List;
  * 4.根据坦克移动的方向，将坦克向对应的方向进行移动
  */
 public class TankFrame extends Frame {
+
+    public static final ThreadLocal<Graphics> GRAPHICS_LOCAL = new ThreadLocal<>();
 
     private Integer width;
 
@@ -118,6 +121,7 @@ public class TankFrame extends Frame {
      */
     @Override
     public void paint(Graphics g){
+        GRAPHICS_LOCAL.set(g);
         //4.根据坦克移动的方向，将坦克向对应的方向进行移动
         tank.paint(g);
         g.drawString("子弹的数量：" + bullets.size(),20,50);
@@ -152,7 +156,9 @@ public class TankFrame extends Frame {
                 }
             }
             //敌方消灭我方坦克
-            collideWith(bullets.get(i),tank);
+            if (bullets.size() != 0){
+                collideWith(bullets.get(i),tank);
+            }
         }
     }
 
@@ -173,6 +179,12 @@ public class TankFrame extends Frame {
             tank.die();
             bullets.remove(bullet);
             enemyTanks.remove(tank);
+            //爆炸
+            Explode e = new Explode(tank.getX(),tank.getY());
+            for (int i = 0; i < ResourceMgr.explodes.length; i++) {
+                e.paint(GRAPHICS_LOCAL.get());
+            }
+            GRAPHICS_LOCAL.remove();
         }
     }
 
