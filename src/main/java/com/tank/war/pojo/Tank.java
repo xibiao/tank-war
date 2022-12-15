@@ -1,6 +1,7 @@
 package com.tank.war.pojo;
 
 import com.tank.war.enums.Direction;
+import com.tank.war.enums.Group;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,8 +22,8 @@ public class Tank extends TankBulletObj {
     public Tank() {
     }
 
-    public Tank(Integer x, Integer y, Direction direction) {
-        super(x,y,ResourceMgr.tankL.getWidth(),ResourceMgr.tankL.getHeight(),direction,5);
+    public Tank(Integer x, Integer y, Direction direction, Group group) {
+        super(x,y,ResourceMgr.tankL.getWidth(),ResourceMgr.tankL.getHeight(),direction,5,group);
     }
 
     public TankFrame getTankFrame() {
@@ -43,6 +44,10 @@ public class Tank extends TankBulletObj {
 
     @Override
     public void paint(Graphics g){
+        //如果坦克不存活，则不画出坦克
+        if (!isLiving()){
+            return;
+        }
         //g.fillRect(getX(),getY(),getWidth(),getHeight());
         Integer x = getX();
         Integer y = getY();
@@ -89,10 +94,10 @@ public class Tank extends TankBulletObj {
     }
 
     @Override
-    public void fire(){
+    public void fire(Group group){
         int x = getX() + getWidth()/2;
         int y = getY() + getHeight()/2;
-        Bullet bullet = new Bullet(x, y, getDirection());
+        Bullet bullet = new Bullet(x, y, getDirection(),group);
         bullet.setX(x-bullet.getWidth()/2);
         bullet.setY(y-bullet.getHeight()/2);
         bullet.setTankFrame(tankFrame);

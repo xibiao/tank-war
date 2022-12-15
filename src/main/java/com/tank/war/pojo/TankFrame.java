@@ -1,6 +1,7 @@
 package com.tank.war.pojo;
 
 import com.tank.war.enums.Direction;
+import com.tank.war.enums.Group;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -26,7 +27,7 @@ public class TankFrame extends Frame {
 
     private Integer height;
 
-    private static TankBulletObj tankBulletObj;
+    private static Tank tank;
 
     private List<Bullet> bullets = new ArrayList<>();
     //敌军坦克
@@ -38,7 +39,7 @@ public class TankFrame extends Frame {
     private TankFrame(Builder builder) {
         this.width = builder.width;
         this.height = builder.height;
-        tankBulletObj = builder.tankBulletObj;
+        tank = builder.tank;
     }
 
     public List<Bullet> getBullets() {
@@ -56,7 +57,7 @@ public class TankFrame extends Frame {
     public static class Builder{
         private Integer width = 800;
         private Integer height = 600;
-        private TankBulletObj tankBulletObj;
+        private Tank tank;
 
         public Builder setWidth(Integer width) {
             this.width = width;
@@ -68,8 +69,8 @@ public class TankFrame extends Frame {
             return this;
         }
 
-        public Builder setTank(TankBulletObj tankBulletObj){
-            this.tankBulletObj = tankBulletObj;
+        public Builder setTank(Tank tank){
+            this.tank = tank;
             return this;
         }
 
@@ -118,7 +119,7 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g){
         //4.根据坦克移动的方向，将坦克向对应的方向进行移动
-        tankBulletObj.paint(g);
+        tank.paint(g);
         g.drawString("子弹的数量：" + bullets.size(),20,50);
         //由于增强for循环是迭代器中提供的，如果使用增强for，在删除bullets中的数据时会报并发修改异常。
         //或者使用迭代器删除也可以。也就是说使用迭代器遍历list时，不能使用list自带的remove方法删除元素。
@@ -136,6 +137,42 @@ public class TankFrame extends Frame {
         //画出敌军坦克
         for (Tank enemy : enemyTanks){
             enemy.paint(g);
+        }
+        //互相消灭对方坦克
+        eliminate();
+    }
+
+    private void eliminate() {
+        for (int i = 0; i < bullets.size(); i++) {
+            //己方消灭敌方坦克
+            for (int j = 0; j < enemyTanks.size(); j++) {
+                collideWith(bullets.get(i),enemyTanks.get(j));
+                if (bullets.size() == 0 || enemyTanks.size() == 0){
+                    break;
+                }
+            }
+            //敌方消灭我方坦克
+            collideWith(bullets.get(i),tank);
+        }
+    }
+
+    /**
+     * 如果己方子弹与对方的坦克碰撞，则己方子弹与对方坦克都消失
+     * @param bullet 子弹
+     * @param tank 坦克
+     */
+    private void collideWith(Bullet bullet, Tank tank) {
+        //防止坦克的子弹打到自己或队友
+        if (bullet.getGroup().equals(tank.getGroup())){
+            return;
+        }
+        Rectangle b = new Rectangle(bullet.getX(),bullet.getY(),bullet.getWidth(),bullet.getHeight());
+        Rectangle t = new Rectangle(tank.getX(),tank.getY(),tank.getWidth(),tank.getHeight());
+        if (b.intersects(t)){
+            bullet.die();
+            tank.die();
+            bullets.remove(bullet);
+            enemyTanks.remove(tank);
         }
     }
 
@@ -187,11 +224,11 @@ public class TankFrame extends Frame {
                     break;
                 case KeyEvent.VK_CONTROL:
                     //释放Ctrl键，我军坦克发射子弹
-                    tankBulletObj.fire();
+                    tank.fire(Group.GOOD);
                     break;
                 case KeyEvent.VK_SHIFT:
                     for (Tank enemy : enemyTanks){
-                        enemy.fire();
+                        enemy.fire(Group.BAD);
                     }
                     break;
                 default:
@@ -203,21 +240,21 @@ public class TankFrame extends Frame {
 
         public void setMainTankDir(){
             if (bL || bU || bR || bD){
-                tankBulletObj.setMoving(true);
+                tank.setMoving(true);
                 if (bL){
-                    tankBulletObj.setDirection(Direction.LEFT);
+                    tank.setDirection(Direction.LEFT);
                 }
                 if (bU){
-                    tankBulletObj.setDirection(Direction.UP);
+                    tank.setDirection(Direction.UP);
                 }
                 if (bR){
-                    tankBulletObj.setDirection(Direction.RIGHT);
+                    tank.setDirection(Direction.RIGHT);
                 }
                 if (bD){
-                    tankBulletObj.setDirection(Direction.DOWN);
+                    tank.setDirection(Direction.DOWN);
                 }
             } else {
-                tankBulletObj.setMoving(false);
+                tank.setMoving(false);
             }
         }
     }

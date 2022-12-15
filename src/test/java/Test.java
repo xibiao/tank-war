@@ -1,4 +1,5 @@
 import com.tank.war.enums.Direction;
+import com.tank.war.enums.Group;
 import com.tank.war.pojo.Bullet;
 import com.tank.war.pojo.Tank;
 import com.tank.war.pojo.TankFrame;
@@ -12,11 +13,11 @@ public class Test {
 
     public static void main(String[] args) {
         //Tank tank = new Tank();
-        Tank tank = new Tank(300,500, Direction.UP);
+        Tank tank = new Tank(300,500, Direction.UP, Group.GOOD);
         //Bullet bullet = new Bullet(200,200,Direction.DOWN);
         TankFrame frame = new TankFrame.Builder().setWidth(600).setHeight(600).setTank(tank).build();
         for (int i = 0; i < 5; i++) {
-            Tank enemy = new Tank(200 + i*50,200,Direction.DOWN);
+            Tank enemy = new Tank(200 + i*50,200,Direction.DOWN,Group.BAD);
             enemy.setEnemy(true);
             enemy.setTankFrame(frame);
             frame.getEnemyTanks().add(enemy);

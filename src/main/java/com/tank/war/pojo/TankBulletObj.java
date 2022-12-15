@@ -1,6 +1,7 @@
 package com.tank.war.pojo;
 
 import com.tank.war.enums.Direction;
+import com.tank.war.enums.Group;
 
 import java.awt.*;
 
@@ -23,16 +24,22 @@ public abstract class TankBulletObj {
 
     private boolean moving = false;
 
+    private boolean living = true;
+
+    private Group group = Group.BAD;
+
     public TankBulletObj() {
     }
 
-    public TankBulletObj(Integer x, Integer y, Integer width, Integer height, Direction direction, Integer speed) {
+    public TankBulletObj(Integer x, Integer y, Integer width, Integer height,
+                         Direction direction, Integer speed, Group group) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.direction = direction;
         this.speed = speed;
+        this.group = group;
     }
 
     public Integer getX() {
@@ -83,6 +90,22 @@ public abstract class TankBulletObj {
         this.moving = moving;
     }
 
+    public boolean isLiving() {
+        return living;
+    }
+
+    public void setLiving(boolean living) {
+        this.living = living;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
     void paint(Graphics g){
         g.fillRect(x,y,width,height);
         if (moving){
@@ -110,6 +133,10 @@ public abstract class TankBulletObj {
         }
     }
 
-    void fire(){}
+    void fire(Group group){}
+
+    void die(){
+        living = false;
+    }
 
 }
