@@ -1,5 +1,7 @@
 package com.tank.war.pojo;
 
+import com.tank.war.utils.ImageUtil;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -20,7 +22,7 @@ public class ResourceMgr {
 
     static {
         try {
-            //我方坦克
+            /*//我方坦克
             tankL = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/tank/tankL.png")));
             tankU = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/tank/tankU.png")));
             tankR = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/tank/tankR.png")));
@@ -34,7 +36,22 @@ public class ResourceMgr {
             bulletL = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/bullet/bulletL.gif")));
             bulletU = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/bullet/bulletU.gif")));
             bulletR = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/bullet/bulletR.gif")));
-            bulletD = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/bullet/bulletD.gif")));
+            bulletD = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/bullet/bulletD.gif")));*/
+            //我方坦克
+            tankU = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/tank/GoodTank1.png")));
+            tankL = ImageUtil.rotateImage(tankU,-90);
+            tankR = ImageUtil.rotateImage(tankU,90);
+            tankD = ImageUtil.rotateImage(tankU,180);
+            //敌方坦克
+            enemyTankU = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/tank/BadTank1.png")));
+            enemyTankL = ImageUtil.rotateImage(enemyTankU,-90);
+            enemyTankR = ImageUtil.rotateImage(enemyTankU,90);
+            enemyTankD = ImageUtil.rotateImage(enemyTankU,180);
+            //子弹
+            bulletU = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/bullet/bulletU.gif")));
+            bulletL = ImageUtil.rotateImage(bulletU,-90);
+            bulletR = ImageUtil.rotateImage(bulletU,90);
+            bulletD = ImageUtil.rotateImage(bulletU,180);
             //爆炸
             for (int i = 0; i < 16; i++) {
                 explodes[i] = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/explode/e" + (i+1) +".gif")));

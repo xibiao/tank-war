@@ -19,12 +19,13 @@ public class Test {
         TankFrame frame = new TankFrame.Builder().setWidth(600).setHeight(600).setTank(tank).build();
         //创建敌方坦克
         for (int i = 0; i < 5; i++) {
-            Tank enemy = new Tank(200 + i*50,200,Direction.DOWN,Group.BAD);
-            enemy.setEnemy(true);
+            Tank enemy = new Tank(200 + i*80,200,Direction.DOWN,Group.BAD);
+            //enemy.setEnemy(true);
             enemy.setTankFrame(frame);
             frame.getEnemyTanks().add(enemy);
         }
         tank.setTankFrame(frame);
+        //死循环让Frame一直重画，否则只在服务启动时画一次，后续界面就无任何响应了
         while (true){
             try {
                 Thread.sleep(100);

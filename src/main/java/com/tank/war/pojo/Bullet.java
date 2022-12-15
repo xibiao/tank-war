@@ -50,10 +50,13 @@ public class Bullet extends TankBulletObj {
         /*if (!live){
             this.tankFrame.getBullets().remove(this);
         }*/
-        Color c = g.getColor();
+        /*Color c = g.getColor();
         g.setColor(Color.RED);
         g.fillOval(getX(),getY(),getWidth(),getHeight());
-        g.setColor(c);
+        g.setColor(c);*/
+
+        BufferedImage img = getImg(ResourceMgr.bulletL,ResourceMgr.bulletU,ResourceMgr.bulletR,ResourceMgr.bulletD);
+        g.drawImage(img,getX(),getY(),null);
 
         move();
     }

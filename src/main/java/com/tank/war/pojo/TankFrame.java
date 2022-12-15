@@ -156,7 +156,7 @@ public class TankFrame extends Frame {
                 }
             }
             //敌方消灭我方坦克
-            if (bullets.size() != 0){
+            if (bullets.size() != 0 && tank.isLiving()){
                 collideWith(bullets.get(i),tank);
             }
         }
@@ -240,11 +240,12 @@ public class TankFrame extends Frame {
                     //释放Ctrl键，我军坦克发射子弹
                     tank.fire(Group.GOOD);
                     break;
-                case KeyEvent.VK_SHIFT:
+                /*case KeyEvent.VK_SHIFT:
+                    //释放shift键，敌军坦克发射子弹
                     for (Tank enemy : enemyTanks){
                         enemy.fire(Group.BAD);
                     }
-                    break;
+                    break;*/
                 default:
                     break;
             }

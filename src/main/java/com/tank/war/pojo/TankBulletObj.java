@@ -4,6 +4,7 @@ import com.tank.war.enums.Direction;
 import com.tank.war.enums.Group;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @Author: Xibiao Cao
@@ -111,6 +112,36 @@ public abstract class TankBulletObj {
         if (moving){
             move();
         }
+    }
+
+    BufferedImage getImg(BufferedImage l, BufferedImage u, BufferedImage r, BufferedImage d){
+        Direction dir = getDirection();
+        BufferedImage img = null;
+        switch (dir){
+            case LEFT:
+                img = l;
+                setWidth(img.getWidth());
+                setHeight(img.getHeight());
+                break;
+            case UP:
+                img = u;
+                setWidth(img.getWidth());
+                setHeight(img.getHeight());
+                break;
+            case RIGHT:
+                img = r;
+                setWidth(img.getWidth());
+                setHeight(img.getHeight());
+                break;
+            case DOWN:
+                img = d;
+                setWidth(img.getWidth());
+                setHeight(img.getHeight());
+                break;
+            default:
+                break;
+        }
+        return img;
     }
 
     void move(){

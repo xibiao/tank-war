@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @Author: Xibiao Cao
@@ -16,8 +17,6 @@ import java.util.List;
 public class Tank extends TankBulletObj {
 
     private TankFrame tankFrame;
-
-    private boolean enemy = false;
 
     public Tank() {
     }
@@ -34,14 +33,6 @@ public class Tank extends TankBulletObj {
         this.tankFrame = tankFrame;
     }
 
-    public boolean isEnemy() {
-        return enemy;
-    }
-
-    public void setEnemy(boolean enemy) {
-        this.enemy = enemy;
-    }
-
     @Override
     public void paint(Graphics g){
         //如果坦克不存活，则不画出坦克
@@ -52,45 +43,27 @@ public class Tank extends TankBulletObj {
         Integer x = getX();
         Integer y = getY();
         BufferedImage img;
-        if (!enemy){
+        if (this.getGroup().equals(Group.GOOD)){
             img = getImg(ResourceMgr.tankL,ResourceMgr.tankU,ResourceMgr.tankR,ResourceMgr.tankD);
         } else {
             img = getImg(ResourceMgr.enemyTankL,ResourceMgr.enemyTankU,ResourceMgr.enemyTankR,ResourceMgr.enemyTankD);
         }
         g.drawImage(img,x,y,null);
+        //让敌方坦克随机移动并发射子弹
+        if (this.getGroup().equals(Group.BAD)){
+            Random random = new Random();
+            int i = random.nextInt(100);
+            if (i >= 95){
+                setMoving(true);
+                fire(this.getGroup());
+                //随机改变坦克的方向
+                setDirection(Direction.values()[random.nextInt(4)]);
+            }
+        }
         if (isMoving()){
             move();
         }
-    }
-
-    private BufferedImage getImg(BufferedImage l, BufferedImage u, BufferedImage r, BufferedImage d){
-        Direction dir = getDirection();
-        BufferedImage img = null;
-        switch (dir){
-            case LEFT:
-                img = l;
-                setWidth(img.getWidth());
-                setHeight(img.getHeight());
-                break;
-            case UP:
-                img = u;
-                setWidth(img.getWidth());
-                setHeight(img.getHeight());
-                break;
-            case RIGHT:
-                img = r;
-                setWidth(img.getWidth());
-                setHeight(img.getHeight());
-                break;
-            case DOWN:
-                img = d;
-                setWidth(img.getWidth());
-                setHeight(img.getHeight());
-                break;
-            default:
-                break;
-        }
-        return img;
+        boundCheck();
     }
 
     @Override
@@ -102,6 +75,27 @@ public class Tank extends TankBulletObj {
         bullet.setY(y-bullet.getHeight()/2);
         bullet.setTankFrame(tankFrame);
         this.tankFrame.getBullets().add(bullet);
+    }
+
+    /**
+     * 边界检测，防止坦克跑出边界
+     */
+    private void boundCheck(){
+        int x = getX();
+        int y = getY();
+        Integer width = getWidth();
+        Integer height = getHeight();
+        if (x < 0){
+            setX(0);
+        }else if (x > this.tankFrame.getWidth() - width){
+            setX(this.tankFrame.getWidth() - width);
+        }
+        if (y < 30){
+            //窗口上面有个30px的边框
+            setY(30);
+        } else if (y > this.tankFrame.getHeight() - height){
+            setY(this.tankFrame.getHeight() - height);
+        }
     }
 
 }
