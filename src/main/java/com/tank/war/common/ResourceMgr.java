@@ -1,5 +1,6 @@
-package com.tank.war.pojo;
+package com.tank.war.common;
 
+import com.tank.war.pojo.Audio;
 import com.tank.war.utils.ImageUtil;
 
 import javax.imageio.ImageIO;
@@ -19,6 +20,7 @@ public class ResourceMgr {
     public static BufferedImage bulletL,bulletU,bulletR,bulletD;
     public static BufferedImage[] explodes = new BufferedImage[16];
     public static Audio explodeAudio;
+    public static BufferedImage energyImg;
 
     static {
         try {
@@ -58,6 +60,8 @@ public class ResourceMgr {
             }
             //爆炸声音
             explodeAudio = new Audio("audio/explode.wav");
+            //能量块
+            energyImg = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/energy/energy.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }

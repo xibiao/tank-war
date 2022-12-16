@@ -11,13 +11,7 @@ import java.awt.image.BufferedImage;
  * @Date: 2022/12/14 18:48
  * @Description:
  */
-public abstract class TankBulletObj {
-    //坐标位置
-    private Integer x = 200;
-    private Integer y = 200;
-    //宽高大小
-    private Integer width;
-    private Integer height;
+public abstract class TankBulletObj extends AbstractThing {
 
     private Direction direction = Direction.RIGHT;
     //移动速度
@@ -25,57 +19,17 @@ public abstract class TankBulletObj {
 
     private boolean moving = false;
 
-    private boolean living = true;
-
     private Group group = Group.BAD;
-    //创建坦克或子弹对应的Rectangle，需要根据Rectangle来判断坦克与子弹是否碰撞
-    private Rectangle rectangle = new Rectangle();
 
     public TankBulletObj() {
     }
 
     public TankBulletObj(Integer x, Integer y, Integer width, Integer height,
                          Direction direction, Integer speed, Group group) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        super(x,y,width,height);
         this.direction = direction;
         this.speed = speed;
         this.group = group;
-        rectangle = new Rectangle(x,y,width,height);
-    }
-
-    public Integer getX() {
-        return x;
-    }
-
-    public void setX(Integer x) {
-        this.x = x;
-    }
-
-    public Integer getY() {
-        return y;
-    }
-
-    public void setY(Integer y) {
-        this.y = y;
-    }
-
-    public Integer getWidth() {
-        return width;
-    }
-
-    public void setWidth(Integer width) {
-        this.width = width;
-    }
-
-    public Integer getHeight() {
-        return height;
-    }
-
-    public void setHeight(Integer height) {
-        this.height = height;
     }
 
     public Direction getDirection() {
@@ -94,14 +48,6 @@ public abstract class TankBulletObj {
         this.moving = moving;
     }
 
-    public boolean isLiving() {
-        return living;
-    }
-
-    public void setLiving(boolean living) {
-        this.living = living;
-    }
-
     public Group getGroup() {
         return group;
     }
@@ -110,48 +56,47 @@ public abstract class TankBulletObj {
         this.group = group;
     }
 
-    public Rectangle getRectangle() {
-        return rectangle;
-    }
-
-    public void setRectangle(Rectangle rectangle) {
-        this.rectangle = rectangle;
-    }
-
+    @Override
     void paint(Graphics g){
-        g.fillRect(x,y,width,height);
+        g.fillRect(getX(),getY(),getWidth(),getHeight());
         if (moving){
             move();
         }
     }
 
     void move(){
+        int x = getX();
+        int y = getY();
         //根据坦克移动的方向，将坦克向对应的方向进行移动
         switch (direction){
             case LEFT:
                 x -= speed;
+                setX(x);
                 break;
             case UP:
                 y -= speed;
+                setY(y);
                 break;
             case RIGHT:
                 x += speed;
+                setX(x);
                 break;
             case DOWN:
                 y += speed;
+                setY(y);
                 break;
             default:
                 break;
         }
         //坦克或子弹移动了，需要修改其对应的rectangle
-        rectangle.x = x;
-        rectangle.y = y;
+        getRectangle().x = x;
+        getRectangle().y = y;
     }
 
     void fire(){}
 
     void die(){
-        living = false;
+        setLiving(false);
     }
 
     BufferedImage getImg(BufferedImage l, BufferedImage u, BufferedImage r, BufferedImage d){

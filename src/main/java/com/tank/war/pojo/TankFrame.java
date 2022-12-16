@@ -1,14 +1,13 @@
 package com.tank.war.pojo;
 
+import com.tank.war.common.ResourceMgr;
 import com.tank.war.enums.Direction;
-import com.tank.war.enums.Group;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -108,7 +107,7 @@ public class TankFrame extends Frame {
         }
         Graphics offScreenGraphics = offScreenImg.getGraphics();
         Color color = offScreenGraphics.getColor();
-        offScreenGraphics.setColor(Color.white);
+        offScreenGraphics.setColor(Color.BLACK);
         offScreenGraphics.fillRect(0,0,width,height);
         offScreenGraphics.setColor(color);
         paint(offScreenGraphics);
@@ -124,7 +123,7 @@ public class TankFrame extends Frame {
         GRAPHICS_LOCAL.set(g);
         //4.根据坦克移动的方向，将坦克向对应的方向进行移动
         tank.paint(g);
-        g.drawString("子弹的数量：" + bullets.size(),20,50);
+        //g.drawString("子弹的数量：" + bullets.size(),20,50);
         //由于增强for循环是迭代器中提供的，如果使用增强for，在删除bullets中的数据时会报并发修改异常。
         //或者使用迭代器删除也可以。也就是说使用迭代器遍历list时，不能使用list自带的remove方法删除元素。
         /*for (int i = 0; i < bullets.size(); i++) {
@@ -144,6 +143,12 @@ public class TankFrame extends Frame {
         }
         //互相消灭对方坦克
         eliminate();
+        //生成能量块，并让坦克去吃能量块
+        createAndEatEnergy();
+
+
+        //最后从ThreadLocal中删除
+        GRAPHICS_LOCAL.remove();
     }
 
     private void eliminate() {
@@ -156,9 +161,9 @@ public class TankFrame extends Frame {
                 }
             }
             //敌方消灭我方坦克
-            if (bullets.size() != 0 && tank.isLiving()){
+            /*if (bullets.size() != 0 && tank.isLiving()){
                 collideWith(bullets.get(i),tank);
-            }
+            }*/
         }
     }
 
@@ -187,8 +192,15 @@ public class TankFrame extends Frame {
             }
             //爆炸时产生声音
             new Thread(ResourceMgr.explodeAudio).start();
-            GRAPHICS_LOCAL.remove();
         }
+    }
+
+    private void createAndEatEnergy(){
+        List<Energy> energyList = Energy.createEnergy();
+        for (Energy e : energyList){
+            e.paint(GRAPHICS_LOCAL.get());
+        }
+        tank.eatEnergy();
     }
 
     static class MyKeyListener extends KeyAdapter{

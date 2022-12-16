@@ -1,5 +1,6 @@
 package com.tank.war.pojo;
 
+import com.tank.war.common.ResourceMgr;
 import com.tank.war.enums.Direction;
 import com.tank.war.enums.Group;
 

@@ -5,6 +5,10 @@ import com.tank.war.pojo.Bullet;
 import com.tank.war.pojo.Explode;
 import com.tank.war.pojo.Tank;
 import com.tank.war.pojo.TankFrame;
+import com.tank.war.strategy.DefaultFireStrategy;
+import com.tank.war.strategy.FireContext;
+import com.tank.war.strategy.FireStrategy;
+import com.tank.war.strategy.FourDirFireStrategy;
 
 /**
  * @Author: Xibiao Cao
@@ -15,13 +19,15 @@ public class Test {
 
     public static void main(String[] args) {
         //Tank tank = new Tank();
-        Tank tank = new Tank(300,500, Direction.UP, Group.GOOD);
+        FireStrategy fourDirFireStrategy = new FourDirFireStrategy();
+        Tank tank = new Tank(300,500, Direction.UP, Group.GOOD, new FireContext(fourDirFireStrategy));
         //Bullet bullet = new Bullet(200,200,Direction.DOWN);
         TankFrame frame = new TankFrame.Builder().setWidth(600).setHeight(600).setTank(tank).build();
         //创建敌方坦克
+        DefaultFireStrategy defaultFireStrategy = new DefaultFireStrategy();
         int initNum = Integer.parseInt(PropertyCfg.getValue("tank.initTankNum"));
         for (int i = 0; i < initNum; i++) {
-            Tank enemy = new Tank(200 + i*80,200,Direction.DOWN,Group.BAD);
+            Tank enemy = new Tank(200 + i*80,200,Direction.DOWN,Group.BAD, new FireContext(defaultFireStrategy));
             //enemy.setEnemy(true);
             enemy.setTankFrame(frame);
             frame.getEnemyTanks().add(enemy);

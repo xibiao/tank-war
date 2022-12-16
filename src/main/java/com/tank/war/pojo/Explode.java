@@ -1,7 +1,6 @@
 package com.tank.war.pojo;
 
-import com.tank.war.enums.Direction;
-import com.tank.war.enums.Group;
+import com.tank.war.common.ResourceMgr;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,7 +10,7 @@ import java.awt.image.BufferedImage;
  * @Date: 2022/12/15 16:13
  * @Description:
  */
-public class Explode extends TankBulletObj {
+public class Explode extends AbstractThing {
 
     private BufferedImage[] images = ResourceMgr.explodes;
 
@@ -20,7 +19,7 @@ public class Explode extends TankBulletObj {
     public Explode() {}
 
     public Explode(Integer x, Integer y) {
-        super(x, y, 0, 0, null, 0, null);
+        super(x, y, 0, 0);
     }
 
     @Override
