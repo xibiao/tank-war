@@ -7,7 +7,7 @@ import java.awt.*;
  * @Date: 2022/12/16 9:39
  * @Description:
  */
-public abstract class AbstractThing {
+public abstract class GameObject {
     //坐标位置
     private Integer x = 200;
     private Integer y = 200;
@@ -19,10 +19,12 @@ public abstract class AbstractThing {
     //创建坦克或子弹对应的Rectangle，需要根据Rectangle来判断坦克与子弹是否碰撞
     private Rectangle rectangle = new Rectangle();
 
-    public AbstractThing() {
+    private GameModel gameModel;
+
+    public GameObject() {
     }
 
-    public AbstractThing(Integer x, Integer y, Integer width, Integer height) {
+    public GameObject(Integer x, Integer y, Integer width, Integer height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -76,6 +78,14 @@ public abstract class AbstractThing {
 
     public void setRectangle(Rectangle rectangle) {
         this.rectangle = rectangle;
+    }
+
+    public GameModel getGameModel() {
+        return gameModel;
+    }
+
+    public void setGameModel(GameModel gameModel) {
+        this.gameModel = gameModel;
     }
 
     abstract void paint(Graphics g);

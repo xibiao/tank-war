@@ -14,8 +14,6 @@ import java.awt.image.BufferedImage;
  */
 public class Bullet extends TankBulletObj {
 
-    private TankFrame tankFrame;
-
     private boolean live = true;
 
     public Bullet() {
@@ -23,14 +21,6 @@ public class Bullet extends TankBulletObj {
 
     public Bullet(Integer x, Integer y, Direction direction, Group group) {
         super(x, y, 10, 10, direction, 10,group);
-    }
-
-    public TankFrame getTankFrame() {
-        return tankFrame;
-    }
-
-    public void setTankFrame(TankFrame tankFrame) {
-        this.tankFrame = tankFrame;
     }
 
     public boolean isLive() {
@@ -48,14 +38,9 @@ public class Bullet extends TankBulletObj {
             return;
         }
         //如果子弹超出弹窗，则删除子弹，防止产生过多子弹对象导致内存溢出
-        /*if (!live){
-            this.tankFrame.getBullets().remove(this);
-        }*/
-        /*Color c = g.getColor();
-        g.setColor(Color.RED);
-        g.fillOval(getX(),getY(),getWidth(),getHeight());
-        g.setColor(c);*/
-
+        if (!live){
+            this.getGameModel().getBullets().remove(this);
+        }
         BufferedImage img = getImg(ResourceMgr.bulletL,ResourceMgr.bulletU,ResourceMgr.bulletR,ResourceMgr.bulletD);
         g.drawImage(img,getX(),getY(),null);
 
@@ -67,8 +52,8 @@ public class Bullet extends TankBulletObj {
         super.move();
         Integer x = getX();
         Integer y = getY();
-        int width = tankFrame.getWidth();
-        int height = tankFrame.getHeight();
+        int width = TankFrame.width;
+        int height = TankFrame.height;
         if (x < 0 || x > width || y < 0 || y > height){
             live = false;
         }

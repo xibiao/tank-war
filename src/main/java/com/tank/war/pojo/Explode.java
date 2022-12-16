@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
  * @Date: 2022/12/15 16:13
  * @Description:
  */
-public class Explode extends AbstractThing {
+public class Explode extends GameObject {
 
     private BufferedImage[] images = ResourceMgr.explodes;
 

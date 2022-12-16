@@ -13,7 +13,7 @@ import java.util.Random;
  * @Date: 2022/12/16 9:33
  * @Description:
  */
-public class Energy extends AbstractThing {
+public class Energy extends GameObject {
 
     private static List<Energy> energyList = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class Energy extends AbstractThing {
         }
         Random random = new Random();
         int i = random.nextInt(1000);
-        if (i > 99){
+        if (i > 995){
             int x = random.nextInt(500);
             int y = random.nextInt(500);
             energyList.add(new Energy(x,y,10,10));

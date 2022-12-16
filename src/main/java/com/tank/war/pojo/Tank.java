@@ -8,7 +8,6 @@ import com.tank.war.strategy.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
-import java.util.List;
 
 /**
  * @Author: Xibiao Cao
@@ -16,8 +15,6 @@ import java.util.List;
  * @Description:
  */
 public class Tank extends TankBulletObj {
-
-    private TankFrame tankFrame;
 
     private FireContext context;
 
@@ -29,14 +26,6 @@ public class Tank extends TankBulletObj {
     public Tank(Integer x, Integer y, Direction direction, Group group, FireContext context) {
         super(x,y, ResourceMgr.tankL.getWidth(),ResourceMgr.tankL.getHeight(),direction,5,group);
         this.context = context;
-    }
-
-    public TankFrame getTankFrame() {
-        return tankFrame;
-    }
-
-    public void setTankFrame(TankFrame tankFrame) {
-        this.tankFrame = tankFrame;
     }
 
     @Override
@@ -70,11 +59,6 @@ public class Tank extends TankBulletObj {
             move();
         }
         boundCheck();
-        //吃掉能量块的数量
-        Color color = g.getColor();
-        g.setColor(Color.YELLOW);
-        g.drawString("吃掉能量块的数量==" + energySet.size(),50,50);
-        g.setColor(color);
     }
 
     @Override
@@ -96,21 +80,35 @@ public class Tank extends TankBulletObj {
      * 边界检测，防止坦克跑出边界
      */
     private void boundCheck(){
+        if (!isExceedBound()){
+            return;
+        }
         int x = getX();
         int y = getY();
         Integer width = getWidth();
         Integer height = getHeight();
         if (x < 0){
             setX(0);
-        }else if (x > this.tankFrame.getWidth() - width){
-            setX(this.tankFrame.getWidth() - width);
+        }else if (x > TankFrame.width - width){
+            setX(TankFrame.width - width);
         }
         if (y < 30){
             //窗口上面有个30px的边框
             setY(30);
-        } else if (y > this.tankFrame.getHeight() - height){
-            setY(this.tankFrame.getHeight() - height);
+        } else if (y > TankFrame.height - height){
+            setY(TankFrame.height - height);
         }
+    }
+
+    /**
+     * 判断是否越界
+     */
+    private boolean isExceedBound(){
+        boolean f1 = getX() < 0;
+        boolean f2 = getX() > TankFrame.width - getWidth();
+        boolean f3 = getY() < 30;
+        boolean f4 = getY() > TankFrame.height - getHeight();
+        return f1 || f2 || f3 || f4;
     }
 
     public void eatEnergy(){

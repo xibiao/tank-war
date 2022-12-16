@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
  * @Date: 2022/12/14 18:48
  * @Description:
  */
-public abstract class TankBulletObj extends AbstractThing {
+public abstract class TankBulletObj extends GameObject {
 
     private Direction direction = Direction.RIGHT;
     //移动速度

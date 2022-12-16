@@ -9,6 +9,10 @@ import com.tank.war.enums.Direction;
  */
 public class DirectionUtil {
 
+    /**
+     * 根据坦克的当前方向获取左方向
+     * @param currDir 坦克的当前方向
+     */
     public static Direction getLeftDir(Direction currDir){
         if (currDir.equals(Direction.LEFT)){
             return Direction.DOWN;
@@ -21,6 +25,10 @@ public class DirectionUtil {
         }
     }
 
+    /**
+     * 根据坦克的当前方向获取右方向
+     * @param currDir 坦克的当前方向
+     */
     public static Direction getRightDir(Direction currDir){
         if (currDir.equals(Direction.LEFT)){
             return Direction.UP;
@@ -33,6 +41,10 @@ public class DirectionUtil {
         }
     }
 
+    /**
+     * 根据坦克的当前方向获取后方向
+     * @param currDir 坦克的当前方向
+     */
     public static Direction getRearDir(Direction currDir){
         if (currDir.equals(Direction.LEFT)){
             return Direction.RIGHT;
