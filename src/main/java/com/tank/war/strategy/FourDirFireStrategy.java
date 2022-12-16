@@ -13,14 +13,9 @@ public class FourDirFireStrategy implements FireStrategy {
 
     @Override
     public void fire(Tank tank) {
-        int x = tank.getX() + tank.getWidth()/2;
-        int y = tank.getY() + tank.getHeight()/2;
+        //四个方向同时开炮
         for (Direction dir : Direction.values()){
-            Bullet bullet = new Bullet(x, y, dir,tank.getGroup());
-            bullet.setX(x-bullet.getWidth()/2);
-            bullet.setY(y-bullet.getHeight()/2);
-            bullet.setTankFrame(tank.getTankFrame());
-            tank.getTankFrame().getBullets().add(bullet);
+            createBullet(tank, dir);
         }
     }
 }

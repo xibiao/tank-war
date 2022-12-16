@@ -1,6 +1,9 @@
 package com.tank.war.strategy;
 
+import com.tank.war.enums.Direction;
+import com.tank.war.pojo.Bullet;
 import com.tank.war.pojo.Tank;
+import com.tank.war.utils.DirectionUtil;
 
 /**
  * @Author: Xibiao Cao
@@ -13,5 +16,15 @@ import com.tank.war.pojo.Tank;
 public interface FireStrategy {
 
     void fire(Tank tank);
+
+    default void createBullet(Tank tank, Direction direction){
+        int x = tank.getX() + tank.getWidth()/2;
+        int y = tank.getY() + tank.getHeight()/2;
+        Bullet bullet = new Bullet(x, y, direction, tank.getGroup());
+        bullet.setX(x-bullet.getWidth()/2);
+        bullet.setY(y-bullet.getHeight()/2);
+        bullet.setTankFrame(tank.getTankFrame());
+        tank.getTankFrame().getBullets().add(bullet);
+    }
 
 }

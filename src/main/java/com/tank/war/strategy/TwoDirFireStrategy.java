@@ -15,19 +15,13 @@ public class TwoDirFireStrategy implements FireStrategy {
 
     @Override
     public void fire(Tank tank) {
-        int x = tank.getX() + tank.getWidth()/2;
-        int y = tank.getY() + tank.getHeight()/2;
-        Direction direction = tank.getDirection();
-        Direction leftDir = DirectionUtil.getLeftDir(direction);
-        Direction rightDir = DirectionUtil.getRightDir(direction);
+        Direction currDir = tank.getDirection();
+        Direction leftDir = DirectionUtil.getLeftDir(currDir);
+        Direction rightDir = DirectionUtil.getRightDir(currDir);
         for (Direction dir : Direction.values()){
             //左右开炮
             if (dir.equals(leftDir) || dir.equals(rightDir)){
-                Bullet bullet = new Bullet(x, y, dir,tank.getGroup());
-                bullet.setX(x-bullet.getWidth()/2);
-                bullet.setY(y-bullet.getHeight()/2);
-                bullet.setTankFrame(tank.getTankFrame());
-                tank.getTankFrame().getBullets().add(bullet);
+                createBullet(tank,dir);
             }
         }
     }
