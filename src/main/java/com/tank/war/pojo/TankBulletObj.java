@@ -28,6 +28,8 @@ public abstract class TankBulletObj {
     private boolean living = true;
 
     private Group group = Group.BAD;
+    //创建坦克或子弹对应的Rectangle，需要根据Rectangle来判断坦克与子弹是否碰撞
+    private Rectangle rectangle = new Rectangle();
 
     public TankBulletObj() {
     }
@@ -41,6 +43,7 @@ public abstract class TankBulletObj {
         this.direction = direction;
         this.speed = speed;
         this.group = group;
+        rectangle = new Rectangle(x,y,width,height);
     }
 
     public Integer getX() {
@@ -107,11 +110,48 @@ public abstract class TankBulletObj {
         this.group = group;
     }
 
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
+    }
+
     void paint(Graphics g){
         g.fillRect(x,y,width,height);
         if (moving){
             move();
         }
+    }
+
+    void move(){
+        //根据坦克移动的方向，将坦克向对应的方向进行移动
+        switch (direction){
+            case LEFT:
+                x -= speed;
+                break;
+            case UP:
+                y -= speed;
+                break;
+            case RIGHT:
+                x += speed;
+                break;
+            case DOWN:
+                y += speed;
+                break;
+            default:
+                break;
+        }
+        //坦克或子弹移动了，需要修改其对应的rectangle
+        rectangle.x = x;
+        rectangle.y = y;
+    }
+
+    void fire(){}
+
+    void die(){
+        living = false;
     }
 
     BufferedImage getImg(BufferedImage l, BufferedImage u, BufferedImage r, BufferedImage d){
@@ -142,32 +182,6 @@ public abstract class TankBulletObj {
                 break;
         }
         return img;
-    }
-
-    void move(){
-        //根据坦克移动的方向，将坦克向对应的方向进行移动
-        switch (direction){
-            case LEFT:
-                x -= speed;
-                break;
-            case UP:
-                y -= speed;
-                break;
-            case RIGHT:
-                x += speed;
-                break;
-            case DOWN:
-                y += speed;
-                break;
-            default:
-                break;
-        }
-    }
-
-    void fire(Group group){}
-
-    void die(){
-        living = false;
     }
 
 }

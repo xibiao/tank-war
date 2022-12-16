@@ -172,8 +172,9 @@ public class TankFrame extends Frame {
         if (bullet.getGroup().equals(tank.getGroup())){
             return;
         }
-        Rectangle b = new Rectangle(bullet.getX(),bullet.getY(),bullet.getWidth(),bullet.getHeight());
-        Rectangle t = new Rectangle(tank.getX(),tank.getY(),tank.getWidth(),tank.getHeight());
+        //在创建坦克或子弹时就创建对应的Rectangle，不用每次循环都创建Rectangle，减少内存浪费
+        Rectangle b = bullet.getRectangle();
+        Rectangle t = tank.getRectangle();
         if (b.intersects(t)){
             bullet.die();
             tank.die();
@@ -238,7 +239,7 @@ public class TankFrame extends Frame {
                     break;
                 case KeyEvent.VK_CONTROL:
                     //释放Ctrl键，我军坦克发射子弹
-                    tank.fire(Group.GOOD);
+                    tank.fire();
                     break;
                 /*case KeyEvent.VK_SHIFT:
                     //释放shift键，敌军坦克发射子弹

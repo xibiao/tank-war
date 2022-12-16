@@ -55,7 +55,7 @@ public class Tank extends TankBulletObj {
             int i = random.nextInt(100);
             if (i >= 95){
                 setMoving(true);
-                fire(this.getGroup());
+                fire();
                 //随机改变坦克的方向
                 setDirection(Direction.values()[random.nextInt(4)]);
             }
@@ -67,10 +67,10 @@ public class Tank extends TankBulletObj {
     }
 
     @Override
-    public void fire(Group group){
+    public void fire(){
         int x = getX() + getWidth()/2;
         int y = getY() + getHeight()/2;
-        Bullet bullet = new Bullet(x, y, getDirection(),group);
+        Bullet bullet = new Bullet(x, y, getDirection(),getGroup());
         bullet.setX(x-bullet.getWidth()/2);
         bullet.setY(y-bullet.getHeight()/2);
         bullet.setTankFrame(tankFrame);

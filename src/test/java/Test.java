@@ -1,3 +1,4 @@
+import com.tank.war.config.PropertyCfg;
 import com.tank.war.enums.Direction;
 import com.tank.war.enums.Group;
 import com.tank.war.pojo.Bullet;
@@ -18,7 +19,8 @@ public class Test {
         //Bullet bullet = new Bullet(200,200,Direction.DOWN);
         TankFrame frame = new TankFrame.Builder().setWidth(600).setHeight(600).setTank(tank).build();
         //创建敌方坦克
-        for (int i = 0; i < 5; i++) {
+        int initNum = Integer.parseInt(PropertyCfg.getValue("tank.initTankNum"));
+        for (int i = 0; i < initNum; i++) {
             Tank enemy = new Tank(200 + i*80,200,Direction.DOWN,Group.BAD);
             //enemy.setEnemy(true);
             enemy.setTankFrame(frame);
