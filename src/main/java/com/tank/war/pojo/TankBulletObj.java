@@ -95,7 +95,7 @@ public abstract class TankBulletObj extends GameObject {
 
     void fire(){}
 
-    void die(){
+    public void die(){
         setLiving(false);
     }
 

@@ -22,6 +22,7 @@ public class Energy extends GameObject {
 
     private Energy(Integer x, Integer y, Integer width, Integer height) {
         super(x, y, width, height);
+        GameModel.getInstance().add(this);
     }
 
     public static List<Energy> getEnergyList() {
@@ -51,7 +52,8 @@ public class Energy extends GameObject {
         int i = random.nextInt(1000);
         if (i > 995){
             int x = random.nextInt(500);
-            int y = random.nextInt(500);
+            //画框的上边框占用30px，防止上边框覆盖能量块
+            int y = random.nextInt(500) + 30;
             energyList.add(new Energy(x,y,10,10));
         }
         return energyList;

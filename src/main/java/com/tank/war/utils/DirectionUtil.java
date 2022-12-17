@@ -1,6 +1,7 @@
 package com.tank.war.utils;
 
 import com.tank.war.enums.Direction;
+import com.tank.war.pojo.Tank;
 
 /**
  * @Author: Xibiao Cao
@@ -55,6 +56,29 @@ public class DirectionUtil {
         }else {
             return Direction.UP;
         }
+    }
+
+    /**
+     * 将坦克反向移动2px
+     */
+    public static void reverseMove(Tank tank){
+        int step = 2;
+        Direction currDir = tank.getDirection();
+        Direction reverseDir;
+        if (currDir.equals(Direction.LEFT)){
+            reverseDir = Direction.RIGHT;
+            tank.setX(tank.getX()+step);
+        } else if (currDir.equals(Direction.UP)){
+            reverseDir = Direction.DOWN;
+            tank.setY(tank.getY()+step);
+        } else if ((currDir.equals(Direction.RIGHT))){
+            reverseDir = Direction.LEFT;
+            tank.setX(tank.getX()-step);
+        }else {
+            reverseDir = Direction.UP;
+            tank.setY(tank.getY()-step);
+        }
+        tank.setDirection(reverseDir);
     }
 
 }

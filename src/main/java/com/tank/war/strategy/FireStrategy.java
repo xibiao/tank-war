@@ -2,6 +2,7 @@ package com.tank.war.strategy;
 
 import com.tank.war.enums.Direction;
 import com.tank.war.pojo.Bullet;
+import com.tank.war.pojo.GameModel;
 import com.tank.war.pojo.Tank;
 
 /**
@@ -22,8 +23,7 @@ public interface FireStrategy {
         Bullet bullet = new Bullet(x, y, direction, tank.getGroup());
         bullet.setX(x-bullet.getWidth()/2);
         bullet.setY(y-bullet.getHeight()/2);
-        bullet.setGameModel(tank.getGameModel());
-        tank.getGameModel().getBullets().add(bullet);
+        bullet.setGameModel(GameModel.getInstance());
     }
 
 }
