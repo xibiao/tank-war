@@ -9,6 +9,6 @@ import com.tank.war.pojo.GameObject;
  */
 public interface Collider {
 
-    boolean collide(GameObject o1, GameObject o2, ColliderChain chain);
+    boolean collide(GameObject o1, GameObject o2);
 
 }

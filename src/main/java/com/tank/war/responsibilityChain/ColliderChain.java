@@ -19,9 +19,9 @@ public class ColliderChain {
         return this;
     }
 
-    public void doCollide(GameObject o1, GameObject o2, ColliderChain chain){
+    public void doCollide(GameObject o1, GameObject o2){
         for (Collider c : colliders){
-            if (!c.collide(o1,o2,chain)){
+            if (!c.collide(o1,o2)){
                 break;
             }
         }

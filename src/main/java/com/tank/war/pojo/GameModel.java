@@ -4,7 +4,6 @@ import com.tank.war.responsibilityChain.ColliderChain;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -14,7 +13,6 @@ import java.util.List;
  */
 public class GameModel {
 
-    public static final ThreadLocal<Graphics> GRAPHICS_LOCAL = new ThreadLocal<>();
     //我军坦克，主坦克
     private Tank tank;
 
@@ -50,7 +48,6 @@ public class GameModel {
     }
 
     public void paint(Graphics g){
-        GRAPHICS_LOCAL.set(g);
         //4.根据坦克移动的方向，将坦克向对应的方向进行移动
         tank.paint(g);
         //g.drawString("子弹的数量：" + bullets.size(),20,50);
@@ -72,18 +69,15 @@ public class GameModel {
         //生成能量块，并让坦克去吃能量块
         createAndEatEnergy();
 
-
-        //最后从ThreadLocal中删除
-        GRAPHICS_LOCAL.remove();
     }
 
     private void eliminate() {
         for (int i = 0; i < gameObjects.size()-1; i++) {
             GameObject obj = gameObjects.get(i);
             for (int j = i+1; j < gameObjects.size(); j++) {
-                chain.doCollide(obj,gameObjects.get(j),chain);
+                chain.doCollide(obj,gameObjects.get(j));
             }
-            //敌方消灭我方坦克
+            //敌方消灭我方坦克，或者我方坦克撞墙掉头返回
             /*if (tank.isLiving()){
                 chain.doCollide(obj,tank,chain);
             }*/

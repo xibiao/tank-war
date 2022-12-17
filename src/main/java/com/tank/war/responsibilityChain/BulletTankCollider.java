@@ -16,7 +16,7 @@ import java.awt.*;
 public class BulletTankCollider implements Collider {
 
     @Override
-    public boolean collide(GameObject o1, GameObject o2, ColliderChain chain) {
+    public boolean collide(GameObject o1, GameObject o2) {
         if (o1 instanceof Bullet && o2 instanceof Tank){
             Bullet b = (Bullet) o1;
             Tank t = (Tank) o2;
@@ -24,10 +24,9 @@ public class BulletTankCollider implements Collider {
             //如果子弹与坦克碰撞了，则结束碰撞链，不执行下一个碰撞器的collide方法
             return false;
         } else if (o1 instanceof Tank && o2 instanceof Bullet){
-            return collide(o2,o1,chain);
+            return collide(o2,o1);
         } else {
             //如果不是子弹与坦克碰撞，则继续执行下一个碰撞器的collide方法
-            //chain.doCollide(o1,o2,chain);
             return true;
         }
     }
@@ -49,8 +48,6 @@ public class BulletTankCollider implements Collider {
         if (b.intersects(t)){
             bullet.die();
             tank.die();
-            //remove(bullet);
-            //remove(tank);
             //创建爆炸图片，并添加到GameModel的gameObjects属性中
             new Explode(tank.getX(),tank.getY());
         }

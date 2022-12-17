@@ -14,22 +14,12 @@ import java.awt.image.BufferedImage;
  */
 public class Bullet extends TankBulletObj {
 
-    private boolean live = true;
-
     public Bullet() {
     }
 
     public Bullet(Integer x, Integer y, Direction direction, Group group) {
         super(x, y, 10, 10, direction, 10,group);
         GameModel.getInstance().add(this);
-    }
-
-    public boolean isLive() {
-        return live;
-    }
-
-    public void setLive(boolean live) {
-        this.live = live;
     }
 
     @Override
@@ -52,7 +42,8 @@ public class Bullet extends TankBulletObj {
         int width = TankFrame.width;
         int height = TankFrame.height;
         if (x < 0 || x > width || y < 0 || y > height){
-            live = false;
+            //如果子弹越界了，则设置它不再活着
+            setLiving(false);
         }
     }
 
